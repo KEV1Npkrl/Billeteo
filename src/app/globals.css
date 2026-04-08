@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply border-gray-200;
+}
+
+body {
+  @apply bg-white dark:bg-gray-950 text-gray-950 dark:text-white;
+  font-feature-settings: 'rounding' 1;
+  font-variation-settings: 'rounding' 1;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded hover:bg-gray-400 dark:hover:bg-gray-600;
+}
+
+/* Utilidades */
+.glass {
+  @apply bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm border border-white/20;
+}
+
+.gradient-primary {
+  @apply bg-gradient-to-r from-primary-500 to-primary-600;
+}
+
+.gradient-success {
+  @apply bg-gradient-to-r from-success-500 to-success-600;
+}
+
+.gradient-danger {
+  @apply bg-gradient-to-r from-danger-500 to-danger-600;
+}
+
+.container-app {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
