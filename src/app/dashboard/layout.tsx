@@ -52,6 +52,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               >
                 Mis Cuentas
               </button>
+
+              <button
+                onClick={() => router.push('/dashboard/savings')}
+                className={`text-sm font-medium transition-colors ${
+                  isActive('/dashboard/savings')
+                    ? 'text-primary-600 border-b-2 border-primary-600 pb-2'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-primary-600'
+                }`}
+              >
+                💰 Ahorros
+              </button>
             </div>
           </div>
 

@@ -121,6 +121,11 @@ export class ApiClient {
         data = await mockApi.getDashboardSummary();
       } else if (endpoint === '/analytics/expenses-by-category') {
         data = await mockApi.getExpensesByCategory();
+      } else if (endpoint === '/savings-goals') {
+        data = await mockApi.getSavingsGoals();
+      } else if (endpoint.match(/^\/savings-goals\/[\w-]+$/)) {
+        const goalId = endpoint.split('/')[2];
+        data = await mockApi.getSavingsGoal(goalId);
       } else {
         throw new Error(`Mock endpoint not found: ${endpoint}`);
       }
@@ -155,6 +160,11 @@ export class ApiClient {
         data = await mockApi.addAccount(body);
       } else if (endpoint === '/transactions') {
         data = await mockApi.addTransaction(body);
+      } else if (endpoint === '/savings-goals') {
+        data = await mockApi.createSavingsGoal(body);
+      } else if (endpoint.match(/^\/savings-goals\/[\w-]+\/contributions$/)) {
+        const goalId = endpoint.split('/')[2];
+        data = await mockApi.addContribution(goalId, body);
       } else {
         throw new Error(`Mock endpoint not found: ${endpoint}`);
       }
@@ -173,8 +183,16 @@ export class ApiClient {
 
   private async mockPut<T>(endpoint: string, body?: any): Promise<ApiResponse<T>> {
     try {
-      // Implementar updates aquí si es necesario
-      throw new Error(`Mock PUT not implemented: ${endpoint}`);
+      let data: any;
+
+      if (endpoint.match(/^\/savings-goals\/[\w-]+$/)) {
+        const goalId = endpoint.split('/')[2];
+        data = await mockApi.updateSavingsGoal(goalId, body);
+      } else {
+        throw new Error(`Mock PUT not implemented: ${endpoint}`);
+      }
+
+      return { success: true, data };
     } catch (error: any) {
       return {
         success: false,
@@ -188,8 +206,16 @@ export class ApiClient {
 
   private async mockDelete<T>(endpoint: string): Promise<ApiResponse<T>> {
     try {
-      // Implementar deletes aquí si es necesario
-      throw new Error(`Mock DELETE not implemented: ${endpoint}`);
+      let data: any;
+
+      if (endpoint.match(/^\/savings-goals\/[\w-]+$/)) {
+        const goalId = endpoint.split('/')[2];
+        data = await mockApi.deleteSavingsGoal(goalId);
+      } else {
+        throw new Error(`Mock DELETE not implemented: ${endpoint}`);
+      }
+
+      return { success: true, data };
     } catch (error: any) {
       return {
         success: false,

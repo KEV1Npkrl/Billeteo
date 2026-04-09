@@ -126,17 +126,75 @@ export type Budget = {
   updated_at: string;
 };
 
-// Tipos de ahorro
+// Tipos de ahorro - SISTEMA PROFESIONAL CON 3 MÉTODOS
+export type SavingsFrequency = 'daily' | 'weekly' | 'monthly' | 'yearly';
+export type SavingsContributionMethod = 'by_installments' | 'by_amount' | 'automatic';
+
+// Configuración específica de frecuencia
+export type FrequencyConfig = {
+  frequency: SavingsFrequency;
+  monthly_week_day?: 'inicio' | 'quincena' | 'fin' | number; // día específico si es número
+  weekly_day?: number; // 0=lunes, 1=martes, ... 6=domingo
+  // Sin config extra para daily/yearly
+};
+
+// Configuración del método de aporte
+export type ContributionConfig = 
+  | { method: 'by_installments'; total_installments: number }  // A: por cuotas
+  | { method: 'by_amount'; amount_per_period: number }        // B: por monto
+  | { method: 'automatic'; target_date: string };             // C: automático
+
+// Simulación de ahorro
+export type SavingsSimulation = {
+  total_amount: number;
+  target_date: string;
+  installments_count: number;
+  amount_per_installment: number;
+  is_realistic: boolean; // basado en ingresos - egresos
+  monthly_income?: number;
+  monthly_expenses?: number;
+  monthly_available?: number;
+  suggested_amount?: number;
+};
+
+// Aporte realizado
+export type SavingsContribution = {
+  id: string;
+  goal_id: string;
+  amount: number;
+  scheduled_date: string;
+  completed_date?: string;
+  status: 'scheduled' | 'completed' | 'missed';
+  transaction_id?: string;
+  notes?: string;
+  created_at: string;
+};
+
+// Meta de ahorro completa
 export type SavingsGoal = {
   id: string;
   user_id: string;
   name: string;
+  description?: string;
   goal_amount: number;
   current_amount: number;
-  deadline?: string;
+  contribution_method: ContributionConfig;
+  frequency_config: FrequencyConfig;
+  contributions: SavingsContribution[];
   priority: 'low' | 'medium' | 'high';
-  description?: string;
   status: 'active' | 'completed' | 'paused';
+  
+  // Fechas
+  start_date: string;
+  target_date?: string;
+  completed_date?: string;
+  
+  // Simulación guardada
+  last_simulation?: SavingsSimulation;
+  
+  // Configuraciones adicionales
+  allow_early_payment: boolean; // permite adelantar pagos
+  
   created_at: string;
   updated_at: string;
 };
